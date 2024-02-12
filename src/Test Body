@@ -1,0 +1,101 @@
+import React, { useState, useEffect } from 'react';
+import Card from './Card'; // Import the Card component
+import Shimmer from '../shimmer/shimmer';
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart, removeFromCart } from '../../redux/store';
+import Stared from '../../assets/icons8-star.gif';
+import Not_Started from '../../assets/icons8-star-48.png';
+import useAllBeerList from '../../utils/useAllBeerList';
+
+const Body = () => {
+  const dispatch = useDispatch();
+  const [beers, setBeers] = useAllBeerList(); // Making own hook
+  const searchResults = useSelector((state) => state.searchResults);
+  const [starStates, setStarStates] = useState({});
+const [Saved,SetSaved]=useState(false)
+
+//   const toggleStar = (beer) => {
+//     if (inCart(beer)) {
+//       dispatch(removeFromCart(beer)); // Remove from cart
+//       removeItemFromLocalStorage(beer); // Remove from local storage
+//     } else {
+//       dispatch(addToCart(beer)); // Add to cart
+//       addItemToLocalStorage(beer); // Add to local storage
+//     }
+//     setStarStates(prevState => {
+//       const newStarStates = { ...prevState };
+//       newStarStates[beer.id] = !newStarStates[beer.id]; // Toggle star state for the specific beer
+//       return newStarStates;
+//     });
+//   };
+  const toggleStar=(beer)=>{
+    if(!Saved){
+        dispatch(addToCart(beer)); // Add to cart
+      addItemToLocalStorage(beer);
+      
+    }
+    else{
+        dispatch(removeFromCart(beer)); // Remove from cart
+      removeItemFromLocalStorage(beer);
+    }
+    SetSaved(!Saved);
+  }
+  
+  const inCart = (beer) => {
+    return !!searchResults.find(item => item.id === beer.id);
+  };
+  
+  const addItemToLocalStorage = (item) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(item);
+    localStorage.setItem('cart', JSON.stringify(cart));
+  };
+  
+  const removeItemFromLocalStorage = (item) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(cartItem => cartItem.id !== item.id);
+    localStorage.setItem('cart', JSON.stringify(cart));
+  };
+
+  return beers.length === 0 ? (
+    <Shimmer />
+  ) : (
+    <div className="container">
+      {searchResults.length === 0 ? (
+        beers.map(beer => (
+          <div className="ffd" key={beer.id} style={{ position: 'relative' }}> {/* Added key attribute to the outer div and set position to relative */}
+            <Card
+              name={beer.name}
+              tagline={beer.tagline}
+              description={beer.description}
+              imageUrl={beer.image_url}
+            />
+            <button
+              className="star-button" 
+              onClick={() => toggleStar(beer)}
+              style={{ position: 'absolute', top: '18px', right: '18px',backgroundColor:'hsl(353, 42%, 32%)'}}
+            >
+              {Saved? <img src={Stared} alt="star" /> : <img src={Not_Started} alt="empty-star" />}
+            </button>
+          </div>
+        ))
+      ) : (
+        searchResults.map(beer => (
+          <div className="ffd" key={beer.id}> {/* Added key attribute to the outer div */}
+            <Card
+              name={beer.name}
+              tagline={beer.tagline}
+              description={beer.description}
+              imageUrl={beer.image_url}
+            />
+            <button onClick={() => toggleStar(beer)} style={{ position: 'relative', top: '-368px', left: '385px',backgroundColor:'hsl(353, 42%, 32%)'}}>
+              {starStates[beer.id] ? <img src={Stared} alt="star" /> : <img src={Not_Started} alt="empty-star" />}
+            </button>
+          </div>
+        ))
+      )}
+    </div>
+  );
+};
+
+export default Body;

@@ -1,0 +1,63 @@
+.Shimmers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 1rem ;
+    
+  }
+  
+  .cards {
+    width: 30%;
+    height: 20rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    background-color: #f6f7f8;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: -2px -1px 15px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: -2px -1px 15px 0px rgba(0,0,0,0.75);
+box-shadow: -2px -1px 15px 0px rgba(0,0,0,0.75);
+  }
+  
+  .image {
+    width: 12rem;
+    height: 18rem;
+    background-color: #d3d3d3; /* Placeholder color */
+    border-radius: 8px;
+    margin-right: 10px;
+  }
+  
+  .info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .heading {
+    height: 20px;
+    background-color: #d3d3d3; /* Placeholder color */
+    border-radius: 8px;
+    margin-bottom: 5px;
+    width: 15rem;
+  }
+  
+  .shimmer {
+    animation: shimmer 2s infinite;
+  }
+  
+  .last_container {
+    height: 8rem;
+    margin: 2rem 0 0rem 0rem;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -400px 0;
+    }
+    100% {
+      background-position: 400px 0;
+    }
+  }
+  

@@ -1,0 +1,42 @@
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Card from '../Body/Card';
+import { removeFromCart } from '../../redux/store';
+import Saved from '../../assets/icons8-star.gif'
+import R_Saved from '../../assets/icons8-star-48.png'
+
+const Favourite=()=> {
+  const CardItems = useSelector((state) => state.cart);
+  const [beers, setBeers] = useState(CardItems);
+  const [star, setStar] = useState(true);
+
+  const dispatch = useDispatch();
+
+  const toggleStar = (beer) => {
+    dispatch(removeFromCart(beer)); // Dispatch removeFromCart action to remove the beer from the cart
+    // Update the beers state to reflect the removal of the beer
+    setBeers(beers.filter(item => item.id !== beer.id)); 
+  }
+
+  return beers.length === 0 ? (
+    <h1>Nothing to show</h1>
+  ) : (
+    <div className='container'>
+    {beers.map(beer => (
+      <div className="ffd" key={beer.id}>
+        <Card
+          name={beer.name}
+          tagline={beer.tagline}
+          description={beer.description}
+          imageUrl={beer.image_url}
+        />
+        <button onClick={() => toggleStar(beer)}style={{ position: 'relative', top: '-368px', left: '385px',backgroundColor:'hsl(353, 42%, 32%)'}}>
+          <img src={star ? Saved : R_Saved} alt="star" />
+        </button>
+      </div>
+    ))}
+    </div>
+  )
+};
+
+export default Favourite;
